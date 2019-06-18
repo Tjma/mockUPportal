@@ -3,13 +3,38 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
 
 
+class Request {
+  String _id;
+  String _venue;
+  String _amount;
 
-String id;
+  Request(this._id, this._venue, this._amount);
+
+  String get id => _id;
+  String get title => _venue;
+  String get amount => _amount;
+
+  }
+
 final db = Firestore.instance;
+CollectionReference collectionReference = db.collection('requests');
+
+Map createRequest(String _amount, String _venue){
+
+
+  var dataMap = new Map<String, dynamic>();
+  dataMap['venue'] = _venue;
+  dataMap['amount'] = _amount;
+
+  collectionReference.document().setData(dataMap);
+  return dataMap;
+}
+
 final _formKey = GlobalKey<FormState>();
 String name;
 final textController1 = TextEditingController();
 int counter = 0;
+
 
 
 class Create extends StatefulWidget {
@@ -22,7 +47,7 @@ class _CreateState extends State<Create> {
   void onPressed() {
     setState(() {
       counter++;
-      print("FUCK");
+      return createRequest('3000', 'Room 304');
     });
   }
 
